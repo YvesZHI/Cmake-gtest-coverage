@@ -15,26 +15,36 @@ set(INCLUDES include)
 find_program(gcovr REQUIRED)
 find_package(GTest REQUIRED)
 
+# normal bin file
 add_executable(${TARGET} src/main.cpp ${SOURCES})
 target_include_directories(${TARGET} PRIVATE ${INCLUDES})
 target_compile_options(${TARGET} PRIVATE -std=c++11 -g)
 
+# unit-test bin file
 add_executable(${TESTTARGET} ${TESTSOURCES} ${SOURCES})
 target_include_directories(${TESTTARGET} PRIVATE ${INCLUDES})
 target_compile_options(${TESTTARGET} PRIVATE -std=c++11 -g -O0 -coverage)
 #target_link_libraries(${TESTTARGET} -lgtest -lpthread gcov)
 target_link_libraries(${TESTTARGET} GTest::GTest GTest::Main gcov)
 
-add_custom_target(cov ALL)
 
+# unit-test bin file & code coverage
+add_custom_target(
+    cov ALL
+    DEPENDS ${TESTTARGET}
+    )
+
+# bash script to generate code coverage
 add_custom_command(
     TARGET cov
-    COMMAND touch xxx
-    COMMAND -E echo -e '#!/bin/bash' > xxx
+    COMMAND touch ${TESTTARGETCOV}
+    COMMAND echo  "'#!/bin/bash'">${TESTTARGETCOV}
+    COMMAND echo >>${TESTTARGETCOV}
+    COMMAND echo >>${TESTTARGETCOV}
+    COMMAND echo "./${TESTTARGET}">>${TESTTARGETCOV}
+    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html -o cov.html">>${TESTTARGETCOV}
+    COMMAND chmod +x ${TESTTARGETCOV}
     )
-#find . \( -name "*.gcda" -o -name "*.gcno" \) -exec cp {} ./ \;
-##file(WRITE ${CMAKE_BINARY_DIR}/${TESTTARGETCOV} "#!/bin/bash\n\n./${TESTTARGET}\nfind . \\( -name \"*.gcda\" -o -name \"*.gcno\" \\) -exec cp {} ./ \; && gcovr -r .. --html -o ${RESULTCOV} && rm *.gcda *.gcno")
-##execute_process(COMMAND bash -c "chmod +x ${TESTTARGETCOV}")
 
 enable_testing()
 include(GoogleTest)
