@@ -4,13 +4,27 @@ project(Student CXX)
 set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_STANDARD 11)
 
+set(INCLUDES include)
 set(SOURCES src/Student.cpp)
+set(MAIN src/main.cpp)
 set(TARGET student)
+
+add_executable(${TARGET} ${MAIN} ${SOURCES})
+target_include_directories(${TARGET} PRIVATE ${INCLUDES})
+
+# release
+if(RELEASE)
+    # normal release bin file
+    target_compile_options(${TARGET} PRIVATE -std=c++11 -O3)
+    return()
+endif()
+
+
+# debug
 set(TESTSOURCES unittest/TestStudent.cpp)
-set(TESTTARGET student-test)
+set(TESTTARGET ${TARGET}-test)
 set(TESTTARGETCOV ${TESTTARGET}-cov)
 set(RESULTCOV cov.html)
-set(INCLUDES include)
 
 find_program(GCOVR gcovr)
 if(NOT GCOVR)
@@ -18,9 +32,7 @@ if(NOT GCOVR)
 endif()
 find_package(GTest REQUIRED)
 
-# normal bin file
-add_executable(${TARGET} src/main.cpp ${SOURCES})
-target_include_directories(${TARGET} PRIVATE ${INCLUDES})
+# normal debug bin file
 target_compile_options(${TARGET} PRIVATE -std=c++11 -g)
 
 # unit-test bin file
@@ -33,7 +45,7 @@ target_link_libraries(${TESTTARGET} GTest::GTest GTest::Main gcov)
 
 # unit-test bin file & code coverage
 add_custom_target(
-    cov ALL
+    cov ALL # ALL is to make the target cov to be executed automatically while executing the command make
     DEPENDS ${TESTTARGET}
     )
 
@@ -45,8 +57,13 @@ add_custom_command(
     COMMAND echo >>${TESTTARGETCOV}
     COMMAND echo >>${TESTTARGETCOV}
     COMMAND echo "./${TESTTARGET}" >>${TESTTARGETCOV}
-    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html -o cov.html" >>${TESTTARGETCOV}
+    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html -o ${RESULTCOV}" >>${TESTTARGETCOV}
     COMMAND chmod +x ${TESTTARGETCOV}
+    )
+
+add_custom_target(
+    clean-all
+    COMMAND rm -f ${RESULTCOV} ${TESTTARGETCOV} && make clean
     )
 
 enable_testing()
