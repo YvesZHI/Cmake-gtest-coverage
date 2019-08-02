@@ -12,7 +12,10 @@ set(TESTTARGETCOV ${TESTTARGET}-cov)
 set(RESULTCOV cov.html)
 set(INCLUDES include)
 
-find_program(gcovr REQUIRED)
+find_program(GCOVR gcovr)
+if(NOT GCOVR)
+    message(FATAL_ERROR "gcovr not found!")
+endif()
 find_package(GTest REQUIRED)
 
 # normal bin file
@@ -38,11 +41,11 @@ add_custom_target(
 add_custom_command(
     TARGET cov
     COMMAND touch ${TESTTARGETCOV}
-    COMMAND echo  "'#!/bin/bash'">${TESTTARGETCOV}
+    COMMAND echo "'#!/bin/bash'" >${TESTTARGETCOV}
     COMMAND echo >>${TESTTARGETCOV}
     COMMAND echo >>${TESTTARGETCOV}
-    COMMAND echo "./${TESTTARGET}">>${TESTTARGETCOV}
-    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html -o cov.html">>${TESTTARGETCOV}
+    COMMAND echo "./${TESTTARGET}" >>${TESTTARGETCOV}
+    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html -o cov.html" >>${TESTTARGETCOV}
     COMMAND chmod +x ${TESTTARGETCOV}
     )
 
