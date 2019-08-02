@@ -61,6 +61,7 @@ add_custom_command(
     COMMAND chmod +x ${TESTTARGETCOV}
     )
 
+
 # execute make clean-all to delete code coverage files
 add_custom_target(
     clean-all
