@@ -25,14 +25,17 @@ target_compile_options(${TESTTARGET} PRIVATE -std=c++11 -g -O0 -coverage)
 #target_link_libraries(${TESTTARGET} -lgtest -lpthread gcov)
 target_link_libraries(${TESTTARGET} GTest::GTest GTest::Main gcov)
 
+add_custom_target(cov ALL)
+
+add_custom_command(
+    TARGET cov
+    COMMAND touch xxx
+    COMMAND -E echo -e '#!/bin/bash' > xxx
+    )
 #find . \( -name "*.gcda" -o -name "*.gcno" \) -exec cp {} ./ \;
-file(WRITE ${CMAKE_BINARY_DIR}/${TESTTARGETCOV} "#!/bin/bash\n\n./${TESTTARGET}\nfind . \\( -name \"*.gcda\" -o -name \"*.gcno\" \\) -exec cp {} ./ \; && gcovr -r .. --html -o ${RESULTCOV} && rm *.gcda *.gcno")
-execute_process(COMMAND bash -c "chmod +x ${TESTTARGETCOV}")
+##file(WRITE ${CMAKE_BINARY_DIR}/${TESTTARGETCOV} "#!/bin/bash\n\n./${TESTTARGET}\nfind . \\( -name \"*.gcda\" -o -name \"*.gcno\" \\) -exec cp {} ./ \; && gcovr -r .. --html -o ${RESULTCOV} && rm *.gcda *.gcno")
+##execute_process(COMMAND bash -c "chmod +x ${TESTTARGETCOV}")
 
 enable_testing()
 include(GoogleTest)
 gtest_add_tests(TARGET student-test AUTO)
-
-
-
-
