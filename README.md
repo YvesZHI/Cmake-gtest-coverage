@@ -7,8 +7,9 @@ This project is a sample which presents how `gtest`, `gcovr` and `cmake` work to
 
 
 ### Installation ###
-Execute `mkdir build && cd build && cmake .. && make` to compile.<br>
+Execute `mkdir build && cd build && cmake .. && make` to compile the debug version.<br>
 This will generate two binariy files: `student`, `student-test` and a bash script: `student-test-cov`.<br>
+Execute `mkdir build && cd build && cmake -DRelease=ON .. && make` to compile the release version.<br>
 
 
 ### General Usage ###
