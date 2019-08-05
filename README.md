@@ -15,4 +15,4 @@ Execute `mkdir build && cd build && cmake -DRelease=ON .. && make` to compile th
 ### General Usage ###
 `student` is the target bin file;<br>
 `student-test` is the unit-test bin file;<br>
-`student-test-cov` is to show the result of unit-test and to generate the html-format coverage file.
+`student-test-cov` is to run `student-test` and to generate the html-format coverage file.
