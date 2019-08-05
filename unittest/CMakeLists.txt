@@ -1,6 +1,8 @@
-set(INCLUDES ../include)
-set(SOURCES ../src/Student.cpp)
+set(INCLUDES ../${INCLUDES}) # ${INCLUDES} comes from parent
+set(SOURCES ../${SOURCES}) # ${SOURCES} comes from parent
 set(TESTSOURCES TestStudent.cpp)
+
+
 set(TESTTARGET ${TARGET}-test)
 set(TESTTARGETCOV ${TESTTARGET}-cov)
 set(RESULTCOV cov.html)
