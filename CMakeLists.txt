@@ -13,7 +13,9 @@ add_executable(${TARGET} ${MAIN} ${SOURCES})
 target_include_directories(${TARGET} PRIVATE ${INCLUDES})
 
 # release
-if(RELEASE)
+# cmake -DRelease=ON ../
+set(Release OFF CACHE BOOL "release or debug")
+if(${Release})
     # normal release bin file
     target_compile_options(${TARGET} PRIVATE -std=c++11 -O3)
     return()
