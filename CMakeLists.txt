@@ -25,4 +25,4 @@ endif()
 target_compile_options(${TARGET} PRIVATE -std=c++11 -g -O0)
 
 # unit-test and code coverage
-add_subdirectory(unittest)
+add_subdirectory(unittest) # directory name
