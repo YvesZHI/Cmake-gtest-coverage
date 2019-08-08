@@ -35,7 +35,7 @@ add_custom_command(
     COMMAND echo >>${TESTTARGETCOV}
     COMMAND echo >>${TESTTARGETCOV}
     COMMAND echo "./${TESTTARGET}" >>${TESTTARGETCOV}
-    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html -o ${RESULTCOV}" >>${TESTTARGETCOV}
+    COMMAND echo "gcovr -r ${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --html --html-details -o ${RESULTCOV}" >>${TESTTARGETCOV}
     COMMAND chmod +x ${TESTTARGETCOV}
     )
 
