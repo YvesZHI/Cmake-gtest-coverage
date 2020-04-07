@@ -4,7 +4,7 @@ set(MAIN src/main.cpp)
 set(TARGET student)
 
 
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.5)
 project(Student CXX)
 
 set(CMAKE_CXX_COMPILER g++)
